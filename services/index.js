@@ -42,10 +42,13 @@ export const getPosts = async() => {
 export const getCategories = async() => {
     const query = gql `
     query GetGategories {
-        categories {
-          name
-          slug
+      categories {
+        name
+        slug
+        image {
+          url
         }
+      }
     }
   `;
 
@@ -252,5 +255,5 @@ export const getRecentPosts = async() => {
   `;
     const result = await request(graphqlAPI, query);
 
-    return result.posts;
+    return result.posts.reverse();
 };

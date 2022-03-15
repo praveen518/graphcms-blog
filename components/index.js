@@ -22,3 +22,5 @@ export { default as AdjacentPostCard }
 from './AdjacentPostCard'
 export { default as Loader }
 from './Loader'
+export { default as Category }
+from './Category'

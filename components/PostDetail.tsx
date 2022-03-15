@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 
 const PostDetail = ({post}: any) => {
-
+    console.log('post ',post);
     const getContentFragment = (index: any, text: any, obj: any, type?: any) => {
         let modifiedText = text;
     
@@ -18,15 +18,28 @@ const PostDetail = ({post}: any) => {
           if (obj.underline) {
             modifiedText = (<u key={index}>{text}</u>);
           }
+          if(obj.type === 'list-item') {
+            modifiedText = [];
+            modifiedText.push(obj.children[0].children[0].text);
+          }
+          if(obj.type === 'code-block'){
+            modifiedText = obj.children[0].text.split('\r\n');
+
+          }
         }
     
         switch (type) {
           case 'heading-three':
             return <h3 key={index} className="text-xl font-semibold mb-4">{modifiedText.map((item: any, i: any) => <React.Fragment key={i}>{item}</React.Fragment>)}</h3>;
           case 'paragraph':
-            return <p key={index} className="mb-8">{modifiedText.map((item: any, i: any) => <React.Fragment key={i}>{item}</React.Fragment>)}</p>;
+            return <p key={index} className="mb-8 text-justify">{modifiedText.map((item: any, i: any) => <React.Fragment key={i}>{item}</React.Fragment>)}</p>;
+          case 'bulleted-list':
+            console.log(modifiedText);
+            return <ul className='list-disc ml-8 py-8'>{modifiedText.map((item: any, index: any) => <li key={item}>{item}</li>)} </ul>
           case 'heading-four':
             return <h4 key={index} className="text-md font-semibold mb-4">{modifiedText.map((item: any, i: any) => <React.Fragment key={i}>{item}</React.Fragment>)}</h4>;
+          case 'code-block':
+            return <div className='flex justify-center'><pre>{modifiedText.map((item: any, i: any) => <code className='block bg-gray-500 text-white max-w-md'>{item}</code>)}</pre></div>
           case 'image':
             return (
               <img
@@ -35,6 +48,7 @@ const PostDetail = ({post}: any) => {
                 height={obj.height}
                 width={obj.width}
                 src={obj.src}
+                className='mr-auto ml-auto'
               />
             );
           default:
@@ -69,12 +83,13 @@ const PostDetail = ({post}: any) => {
                     <span className="align-middle">{moment(post.createdAt).format('MMM DD, YYYY')}</span>
                 </div>
             </div>
-            <h1 className='mb-8 text-3xl font-semibold'>{post.title}</h1>
-            {post.content.raw.children.map((typeObj: any, index: any) => {
-                const children = typeObj.children.map((item: any, itemindex: any) => getContentFragment(itemindex, item.text, item));
-
-                return getContentFragment(index, children, typeObj, typeObj.type);
-          })}
+            <div className='flex flex-col'>
+              <h1 className='mb-8 text-3xl font-semibold'>{post.title}</h1>
+                {post.content.raw.children.map((typeObj: any, index: any) => {
+                  const children = typeObj.children.map((item: any, itemindex: any) => getContentFragment(itemindex, item.text, item));
+                  return getContentFragment(index, children, typeObj, typeObj.type);
+                })}
+            </div>
         </div>
     </div>
   )
