@@ -1,8 +1,10 @@
+import 'tailwindcss/tailwind.css'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import {PostCard, PostWidget, Categories, Category} from '../components'
 import {getCategories} from '../services'
+import { GetStaticProps } from 'next'
 import {FeaturedPosts} from '../sections'
 
 const Home: NextPage = ({categories}: any) => {
@@ -39,7 +41,7 @@ const Home: NextPage = ({categories}: any) => {
 
 export default Home
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const categories = (await getCategories()) || [];
 
   return {

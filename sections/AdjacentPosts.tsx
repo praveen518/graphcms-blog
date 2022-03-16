@@ -4,7 +4,7 @@ import { AdjacentPostCard } from '../components';
 import { getAdjacentPosts } from '../services';
 
 const AdjacentPosts = ({ createdAt, slug }: any) => {
-  const [adjacentPost, setAdjacentPost] = useState(null);
+  const [adjacentPost, setAdjacentPost] = useState<any>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
